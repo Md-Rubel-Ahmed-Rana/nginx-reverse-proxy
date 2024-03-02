@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+  user:
+    build: 
+      context: user
+    container_name: user-ms
+    working_dir: /app
+    networks: 
+      - node-network
+    tty: true
+    ports: 
+      - "5001:5001"
+    command: npm start
+
+  product:
+    build: 
+      context: product
+    container_name: product-ms
+    working_dir: /app
+    networks: 
+      - node-network
+    tty: true
+    ports: 
+      - "5002:5002"
+    command: npm start
+
+  cart:
+    build: 
+      context: cart
+    container_name: cart-ms
+    working_dir: /app
+    networks: 
+      - node-network
+    tty: true
+    ports: 
+      - "5003:5003"
+    command: npm start
+
+  order:
+    build: 
+      context: order
+    container_name: order-ms
+    working_dir: /app
+    networks: 
+      - node-network
+    tty: true
+    ports: 
+      - "5004:5004"
+    command: npm start
+
+  nginx:
+    build: 
+      context: nginx
+    container_name: nginx
+    restart: always
+    tty: true
+    ports: 
+      - "8080:8080"
+    networks: 
+      - node-network
+    depends_on:
+       - user
+       - product
+       - cart
+       - order
+  
+networks: 
+  node-network:
+    driver: bridge
